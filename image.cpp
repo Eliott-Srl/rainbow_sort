@@ -1,11 +1,11 @@
-#include "image.h"
-#include "utils.h"
+#include "image.hpp"
+#include "utils.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image/stb_image.h"
+#include "stb_image/stb_image.hpp"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image/stb_image_write.h"
+#include "stb_image/stb_image_write.hpp"
 
 Image::Image(const char* fname) {
     if ((data = stbi_load(fname, &width, &height, &channels, 0)) != NULL) {

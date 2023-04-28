@@ -12,7 +12,7 @@ endif()
 project ("rainbow_sort_2")
 
 # Ajoutez une source à l'exécutable de ce projet.
-add_executable (rainbow_sort_2 "rainbow_sort_2.cpp"  "utils.h" "image.cpp" "image.h"  )
+add_executable (rainbow_sort_2 "rainbow_sort_2.cpp"  "utils.hpp" "image.cpp" "image.hpp"  )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET rainbow_sort_2 PROPERTY CXX_STANDARD 20)

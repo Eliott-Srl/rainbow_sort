@@ -1,5 +1,5 @@
-﻿#include "image.h"
-#include "utils.h"
+﻿#include "image.hpp"
+#include "utils.hpp"
 
 #include <iostream>
 #include <dirent.h>
