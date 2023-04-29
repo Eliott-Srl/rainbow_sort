@@ -9,12 +9,18 @@
 
 //Constructor of the class Image
 Image::Image(const char* fname) {
-    if ((data = stbi_load(fname, &width, &height, &channels, 0)) != NULL) { //load the datas from tge image
+    if ((data = stbi_load(fname, &width, &height, &channels, 0)) != NULL) { //load the datas from the image
         size = width * height * channels;
-    }
-    else {
+    } else {
         ON_ERROR_EXIT(true, "Couldn't open the image");
     }
+}
+
+//Destrcutor of the class Image that free the image
+Image::~Image() {
+    stbi_image_free(data);
+    data = NULL;
+    width, height, size = 0;
 }
 
 //All the useful getters
@@ -39,21 +45,15 @@ uint8_t* Image::getDatas() {
 }
 //End of the useful getters
 
-//function that free the image basicaly
-void Image::freeImage() {
-    if (data != NULL) {
-        stbi_image_free(data);
-        data = NULL;
-        width = 0;
-        height = 0;
-        size = 0;
-    }
-}
 
 //Constructor of the class AveragedChannels
 AveragedChannels::AveragedChannels(Image* img, char* fname) {
     original = img;
     filename = fname;
+}
+
+AveragedChannels::~AveragedChannels() {
+    free(filename);
 }
 
 //All the useful getters
@@ -77,7 +77,7 @@ int AveragedChannels::getBlue() {
     return blue;
 }
 
-int AveragedChannels::getHue() {
+double AveragedChannels::getHue() {
     return hue;
 }
 //End of the useful getters
@@ -90,9 +90,7 @@ bool AveragedChannels::operator<(AveragedChannels& _o) {
 //function to average the color of original
 void AveragedChannels::average() {
     //r, g, b
-    long long lred = 0;
-    long long lgreen = 0;
-    long long lblue = 0;
+    long long lred = 0, lgreen = 0, lblue = 0;
 
     //for loop which add to lred, lgreen, lblue, the rgb values of every pixel of the image
     for (uint8_t* p = original->getDatas(); p <= original->getDatas() + original->getSize(); p += original->getChannels()) {
@@ -102,9 +100,10 @@ void AveragedChannels::average() {
     }
 
     //do the average of every channels
-    red = lred / (original->getSize() / original->getChannels());
-    green = lgreen / (original->getSize() / original->getChannels());
-    blue = lblue / (original->getSize() / original->getChannels());
+    int size = (original->getSize() / original->getChannels());
+    red = lred / size;
+    green = lgreen / size;
+    blue = lblue / size;
 }
 
 void AveragedChannels::rgbtohsv() {
@@ -140,4 +139,6 @@ void AveragedChannels::rgbtohsv() {
         hue = 0;
         saturation = 0;
     }
+
+    std::cout << red << " " << green << " " << blue << " " << hue << " " << saturation << " " << value << std::endl;
 }

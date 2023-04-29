@@ -18,14 +18,13 @@ class Image {
 
     public:
         Image(const char* fname);
+        ~Image();
 
         int getWidth();
         int getHeight();
         int getChannels();
         size_t getSize();
         uint8_t* getDatas();
-
-        void freeImage();
 };
 
 class AveragedChannels {
@@ -35,19 +34,20 @@ class AveragedChannels {
         int red;
         int green;
         int blue;
-        int hue;
-        int saturation;
-        int value;
+        double hue;
+        double saturation;
+        double value;
 
     public:
         AveragedChannels(Image* img, char* fname);
+        ~AveragedChannels();
 
         Image* getImage();
         char* getFileName();
         int getRed();
         int getGreen();
         int getBlue();
-        int getHue();
+        double getHue();
 
         bool operator<(AveragedChannels& _o);
 
