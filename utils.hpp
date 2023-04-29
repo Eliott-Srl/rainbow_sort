@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
+//little function so it's easier to debug
 #define ON_ERROR_EXIT(cond, message) \
 do { \
     if((cond)) { \
@@ -13,10 +14,3 @@ do { \
         exit(1); \
     } \
 } while (0)
-
-static inline bool str_ends_in(const char *str, const char *ends) {
-    size_t str_len = strlen(str);
-    size_t ends_len = strlen(ends);
-    const char *pos = strstr(str, ends);
-    return (pos != NULL) && (pos + ends_len == str + str_len);
-}

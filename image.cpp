@@ -7,17 +7,17 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image/stb_image_write.hpp"
 
+//Constructor of the class Image
 Image::Image(const char* fname) {
-    if ((data = stbi_load(fname, &width, &height, &channels, 0)) != NULL) {
-        //std::cout << fname << " " << width << " " << height << " " << channels << std::endl;
+    if ((data = stbi_load(fname, &width, &height, &channels, 0)) != NULL) { //load the datas from tge image
         size = width * height * channels;
-        allocation_ = STB_ALLOCATED;
     }
     else {
         ON_ERROR_EXIT(true, "Couldn't open the image");
     }
 }
 
+//All the useful getters
 int Image::getWidth() {
     return width;
 }
@@ -37,37 +37,26 @@ size_t Image::getSize() {
 uint8_t* Image::getDatas() {
     return data;
 }
+//End of the useful getters
 
-void Image::save_as(const char* fname) {
-    if (str_ends_in(fname, ".jpg") || str_ends_in(fname, ".JPG") || str_ends_in(fname, ".jpeg") || str_ends_in(fname, ".JPEG")) {
-        stbi_write_jpg(fname, width, height, channels, data, 100);
-    }
-    else if (str_ends_in(fname, ".png") || str_ends_in(fname, ".PNG")) {
-        stbi_write_png(fname, width, height, channels, data, width * channels);
-    }
-    else {
-        ON_ERROR_EXIT(true, "");
-    }
-}
-
+//function that free the image basicaly
 void Image::freeImage() {
-    if (allocation_ != NO_ALLOCATION && data != NULL) {
-        if (allocation_ == STB_ALLOCATED) {
-            stbi_image_free(data);
-        }
+    if (data != NULL) {
+        stbi_image_free(data);
         data = NULL;
         width = 0;
         height = 0;
         size = 0;
-        allocation_ = NO_ALLOCATION;
     }
 }
 
+//Constructor of the class AveragedChannels
 AveragedChannels::AveragedChannels(Image* img, char* fname) {
     original = img;
     filename = fname;
 }
 
+//All the useful getters
 Image* AveragedChannels::getImage() {
     return original;
 }
@@ -91,27 +80,36 @@ int AveragedChannels::getBlue() {
 int AveragedChannels::getHue() {
     return hue;
 }
+//End of the useful getters
 
+//Operator overloading so I can compare and sort the images by hue
 bool AveragedChannels::operator<(AveragedChannels& _o) {
     return hue < _o.getHue();
 }
 
+//function to average the color of original
 void AveragedChannels::average() {
+    //r, g, b
     long long lred = 0;
     long long lgreen = 0;
     long long lblue = 0;
 
+    //for loop which add to lred, lgreen, lblue, the rgb values of every pixel of the image
     for (uint8_t* p = original->getDatas(); p <= original->getDatas() + original->getSize(); p += original->getChannels()) {
         lred += p[0];
         lgreen += p[1];
         lblue += p[2];
     }
+
+    //do the average of every channels
     red = lred / (original->getSize() / original->getChannels());
     green = lgreen / (original->getSize() / original->getChannels());
     blue = lblue / (original->getSize() / original->getChannels());
 }
 
 void AveragedChannels::rgbtohsv() {
+    //Implementation of this: https://www.geeksforgeeks.org/program-change-rgb-color-model-hsv-color-model/
+    //For now, only the hue is accurate
     double r = red / 255.0;
     double g = green / 255.0;
     double b = blue / 255.0;
@@ -142,10 +140,4 @@ void AveragedChannels::rgbtohsv() {
         hue = 0;
         saturation = 0;
     }
-}
-
-std::string current_path() { 
-    char buff[FILENAME_MAX]; //create string buffer to hold path
-    GetCurrentDir(buff, FILENAME_MAX);
-    return (std::string)buff;
 }

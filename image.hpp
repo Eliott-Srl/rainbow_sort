@@ -7,13 +7,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include <direct.h>
-#define GetCurrentDir _getcwd
-
-
-enum allocation_type {
-    NO_ALLOCATION, SELF_ALLOCATION, STB_ALLOCATED
-};
 
 class Image {
     private:
@@ -22,7 +15,6 @@ class Image {
         int channels;
         size_t size;
         uint8_t* data;
-        enum allocation_type allocation_;
 
     public:
         Image(const char* fname);
@@ -34,7 +26,6 @@ class Image {
         uint8_t* getDatas();
 
         void freeImage();
-        void save_as(const char* fname);
 };
 
 class AveragedChannels {
@@ -63,5 +54,3 @@ class AveragedChannels {
         void average();
         void rgbtohsv();
 };
-
-std::string current_path();
