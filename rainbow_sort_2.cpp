@@ -30,8 +30,8 @@ int main() {
     }
 
     //transformation from string to char* of the final path
-    char* char_path = new char[path.length() + 1];
-    strcpy(char_path, path.c_str());
+    char char_path[FILENAME_MAX];
+    strcpy_s(char_path, FILENAME_MAX - 1, path.c_str());
      
     DIR* dir; //final path compatible with the file reader
 
@@ -51,7 +51,7 @@ int main() {
                 ON_ERROR_EXIT(full_path == 0, "Error allocating memory"); //Little verification bc idk
                 std::size_t length = path.copy(full_path, path.size(), 0); //Creation of the path with the name and the extension of the file
                 full_path[length] = '\0'; //this is for finishing the buffer
-                strcat(full_path, diread->d_name);
+                strcat_s(full_path, FILENAME_MAX - 1, diread->d_name);
                  
                 Image img(full_path); //creation of an object Image
                 if (img.getDatas() != NULL) {                 
@@ -72,10 +72,10 @@ int main() {
             char idx_name[FILENAME_MAX];
             std::size_t length = path.copy(idx_name, path.size(), 0);
             idx_name[length] = '\0';
-            strcat(idx_name, std::to_string(idx + 1).c_str());
-            strcat(idx_name, ".");
+            strcat_s(idx_name, FILENAME_MAX - 1, std::to_string(idx + 1).c_str());
+            strcat_s(idx_name, FILENAME_MAX - 1, ".");
             //my way to get the extension ¯\_(ツ)_/¯
-            strcat(idx_name, ((std::string)it->getFileName()).substr(((std::string)it->getFileName()).find_last_of(".") + 1).c_str());
+            strcat_s(idx_name, FILENAME_MAX -1, ((std::string)it->getFileName()).substr(((std::string)it->getFileName()).find_last_of(".") + 1).c_str());
 
             //rename the file with the new name and a little verification because why not
             ON_ERROR_EXIT(rename(it->getFileName(), idx_name) != 0, "Error renaming file");
