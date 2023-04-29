@@ -1,7 +1,6 @@
 #pragma once
 
 #include <stdlib.h>
-#include <stdio.h>
 
 //little function so it's easier to debug
 #define ON_ERROR_EXIT(cond, message) \
