@@ -57,8 +57,6 @@ class AveragedChannels {
         int getGreen();
         int getBlue();
         int getHue();
-        int getSaturation();
-        int getValue();
 
         bool operator<(AveragedChannels& _o);
 

@@ -92,14 +92,6 @@ int AveragedChannels::getHue() {
     return hue;
 }
 
-int AveragedChannels::getSaturation() {
-    return saturation;
-}
-
-int AveragedChannels::getValue() {
-    return value;
-}
-
 bool AveragedChannels::operator<(AveragedChannels& _o) {
     return hue < _o.getHue();
 }
