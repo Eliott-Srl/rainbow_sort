@@ -52,10 +52,6 @@ AveragedChannels::AveragedChannels(Image* img, char* fname) {
     filename = fname;
 }
 
-AveragedChannels::~AveragedChannels() {
-    free(filename);
-}
-
 //All the useful getters
 Image* AveragedChannels::getImage() {
     return original;
@@ -100,7 +96,7 @@ void AveragedChannels::average() {
     }
 
     //do the average of every channels
-    int size = (original->getSize() / original->getChannels());
+    size_t size = (original->getSize() / original->getChannels());
     red = lred / size;
     green = lgreen / size;
     blue = lblue / size;
@@ -108,7 +104,7 @@ void AveragedChannels::average() {
 
 void AveragedChannels::rgbtohsv() {
     //Implementation of this: https://www.geeksforgeeks.org/program-change-rgb-color-model-hsv-color-model/
-    //For now, only the hue is accurate
+    //For now, only the hue and the saturation is accurate
     double r = red / 255.0;
     double g = green / 255.0;
     double b = blue / 255.0;
@@ -140,5 +136,5 @@ void AveragedChannels::rgbtohsv() {
         saturation = 0;
     }
 
-    std::cout << red << " " << green << " " << blue << " " << hue << " " << saturation << " " << value << std::endl;
+    //std::cout << red << " " << green << " " << blue << " " << hue << " " << saturation << " " << value << std::endl;
 }

@@ -81,6 +81,8 @@ int main() {
             ON_ERROR_EXIT(rename(it->getFileName(), idx_name) != 0, "Error renaming file");
             std::cout << it->getFileName() << ": Done. " << std::endl;
 
+            free(it->getFileName());
+
             idx++;
         }
         

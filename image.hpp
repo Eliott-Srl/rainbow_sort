@@ -40,7 +40,6 @@ class AveragedChannels {
 
     public:
         AveragedChannels(Image* img, char* fname);
-        ~AveragedChannels();
 
         Image* getImage();
         char* getFileName();
