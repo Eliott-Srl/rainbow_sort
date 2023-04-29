@@ -29,8 +29,6 @@ int main() {
         path = directory_name;
     }
 
-    std::cout << path << std::endl;
-
     //transformation from string to char* of the final path
     char* char_path = new char[path.length() + 1];
     strcpy(char_path, path.c_str());
@@ -60,15 +58,13 @@ int main() {
                     hue_list.push_back(AveragedChannels(&img, full_path)); //Add to the list an object AveragedChannels that inherit Image
                     hue_list.back().average(); //average the last image i've added
                     hue_list.back().rgbtohsv(); //calculate the hsv color space
-                                        
-                    hue_list.back().getImage()->freeImage(); //free the original image bc I don't need it anymore
                 }
             }
         } while (diread != NULL);
 
         std::cout << "Renaming the file with their hue ..." << std::endl;
          
-        hue_list.sort(); //the hue list is sorted by hue beacause in the AveragedChannels class i've overloaded the operator "<"
+        hue_list.sort(); //the hue list is sorted by hue because in the AveragedChannels class i've overloaded the operator "<"
         
         int idx = 0; //this counter will be the final name of the file
         for (std::list<AveragedChannels>::iterator it = hue_list.begin(); it != hue_list.end(); ++it) {
@@ -84,8 +80,6 @@ int main() {
             //rename the file with the new name and a little verification because why not
             ON_ERROR_EXIT(rename(it->getFileName(), idx_name) != 0, "Error renaming file");
             std::cout << it->getFileName() << ": Done. " << std::endl;
-                        
-            free(it->getFileName()); //freeing the memory allocation of every char* path
 
             idx++;
         }
